@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #0f172a;
+  --color-muted: #64748b;
+  --color-line: #e2e8f0;
+  --color-page: #f4f5f7;
+  --color-primary: #0f172a;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .hq-input {
+    @apply mt-1 h-10 w-full rounded-lg border border-line bg-white px-3 text-sm font-normal text-ink outline-none transition;
+    @apply placeholder:text-muted/70 focus:border-slate-400 focus:ring-4 focus:ring-slate-900/10;
+  }
+
+  .hq-btn {
+    @apply inline-flex h-10 items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-white transition;
+    @apply hover:bg-slate-800 disabled:pointer-events-none disabled:opacity-60;
+  }
+
+  .hq-btn-ghost {
+    @apply inline-flex h-10 items-center justify-center rounded-lg border border-line bg-white px-3 text-sm font-medium text-ink transition;
+    @apply hover:border-slate-300 hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-60;
+  }
+
+  .hq-card {
+    @apply rounded-2xl border border-line bg-white shadow-sm;
+  }
+}
