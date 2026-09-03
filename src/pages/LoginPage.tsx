@@ -7,7 +7,7 @@ import { formatApiError, useAuth } from '../contexts/AuthContext';
 export function LoginPage() {
   const { token, login } = useAuth();
   const [email, setEmail] = useState('superadmin@otelapps.test');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('SuperAdmin');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -37,7 +37,7 @@ export function LoginPage() {
           </div>
           <p className="mt-5 text-sm font-medium text-muted">OtelApps</p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">HQ</h1>
-          <p className="mt-2 text-sm text-muted">Přihlášení jen pro superadmina.</p>
+          <p className="mt-2 text-sm text-muted">Přihlášení jen pro SuperAdmina.</p>
           <div className="mt-8 space-y-4">
             <TextField
               label="E-mail"

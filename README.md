@@ -14,7 +14,7 @@ npm run dev    # http://127.0.0.1:5174  (HostWeb drží 5173)
 
 WebAdmin musí běžet (`php artisan serve`). Vite proxyuje `/api/platform` na `VITE_PLATFORM_API_URL`.
 
-Login: demo `superadmin@otelapps.test` / `password`. Recepce a ostatní dostanou 403.
+Login: demo `superadmin@otelapps.test` / `SuperAdmin`. Recepce a ostatní dostanou 403.
 
 V `.env` WebAdminu přidej HQ origin do `CORS_ALLOWED_ORIGINS` (`http://127.0.0.1:5174`).
 

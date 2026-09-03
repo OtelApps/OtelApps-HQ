@@ -39,6 +39,11 @@ body {
     @apply hover:border-slate-300 hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-60;
   }
 
+  .hq-btn-danger {
+    @apply inline-flex h-10 items-center justify-center rounded-lg bg-red-600 px-4 text-sm font-medium text-white transition;
+    @apply hover:bg-red-700 disabled:pointer-events-none disabled:opacity-60;
+  }
+
   .hq-card {
     @apply rounded-2xl border border-line bg-white shadow-sm;
   }

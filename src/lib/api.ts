@@ -11,6 +11,13 @@ export type HotelProfile = {
   play_store_url: string;
 };
 
+export type HotelStaff = {
+  id: number;
+  name: string;
+  email: string;
+  user_type: string | null;
+};
+
 export type HotelRecord = {
   id: string;
   slug: string;
@@ -18,6 +25,7 @@ export type HotelRecord = {
   modules: Record<string, boolean>;
   disabled_modules: string[];
   profile: HotelProfile;
+  staff?: HotelStaff[];
 };
 
 export type ModuleCatalogItem = {
@@ -76,7 +84,16 @@ export async function platformFetch<T>(path: string, init: RequestInit = {}): Pr
     throw new ApiError('Nepřihlášen.', 401);
   }
 
-  const json = (await response.json().catch(() => ({}))) as { message?: string } & T;
+  const text = await response.text();
+  let json: ({ message?: string } & T) | Record<string, never> = {};
+  try {
+    json = text ? (JSON.parse(text) as { message?: string } & T) : {};
+  } catch {
+    throw new ApiError(
+      response.ok ? 'Neplatná odpověď serveru.' : `HTTP ${response.status}`,
+      response.status,
+    );
+  }
   if (!response.ok) {
     const message =
       typeof json === 'object' && json && 'message' in json && typeof json.message === 'string'
@@ -88,11 +105,18 @@ export async function platformFetch<T>(path: string, init: RequestInit = {}): Pr
   return json as T;
 }
 
-export function login(email: string, password: string) {
-  return platformFetch<{ token: string; user: { name: string; email: string } }>('/api/platform/login', {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-  });
+export async function login(email: string, password: string) {
+  const data = await platformFetch<{ token?: string; user: { name: string; email: string } }>(
+    '/api/platform/login',
+    {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    },
+  );
+  if (!data.token) {
+    throw new ApiError('Přihlášení se nezdařilo.', 500);
+  }
+  return data as { token: string; user: { name: string; email: string } };
 }
 
 export function fetchHotels() {
@@ -147,6 +171,13 @@ export function fetchHotelEnv(slug: string) {
   return platformFetch<{ slug: string; files: HotelEnvFiles }>(
     `/api/platform/hotels/${encodeURIComponent(slug)}/env`,
   );
+}
+
+export function deleteHotel(slug: string, confirmation: string, password: string) {
+  return platformFetch<{ ok: boolean }>(`/api/platform/hotels/${encodeURIComponent(slug)}`, {
+    method: 'DELETE',
+    body: JSON.stringify({ confirmation, password }),
+  });
 }
 
 export function guestWebUrl(hotel: HotelRecord): string | null {

@@ -6,11 +6,11 @@ import {
 } from 'react';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'ghost';
+  variant?: 'primary' | 'ghost' | 'danger';
 };
 
 export function Button({ variant = 'primary', className = '', ...props }: ButtonProps) {
-  const base = variant === 'ghost' ? 'hq-btn-ghost' : 'hq-btn';
+  const base = variant === 'ghost' ? 'hq-btn-ghost' : variant === 'danger' ? 'hq-btn-danger' : 'hq-btn';
   return <button className={`${base} ${className}`.trim()} {...props} />;
 }
 
